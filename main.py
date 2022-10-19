@@ -117,15 +117,15 @@ class Shell:
             elif user_input in ('quit', 'exit', 'exit()', 'q'):
                 self.is_running = False
             
+            elif shutil.which(user_cmd[0]):
+                shell_logger.info("Executed from shutil.which")
+                subprocess.run(user_input)#, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
             elif user_cmd[0] in ('sudo', 'su'):
                 is_authenticated = self.authenticate_user()
                 if is_authenticated:
                     self.elevate_privilege()
 
-            elif shutil.which(user_cmd[0]):
-                shell_logger.info("Executed from shutil.which")
-                subprocess.run(user_input)#, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
             else:
                 shell_logger.info(f"{user_cmd[0]} not found")
                 print(f'{user_cmd[0]}: not found')
@@ -149,8 +149,6 @@ class Shell:
     @classmethod
     def make_shell(cls, prompt='$', env='default', username=None):
         cls(prompt, env, username)
-
-
 
 
 class UserShell(Shell):
