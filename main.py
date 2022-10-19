@@ -148,14 +148,15 @@ class Shell:
     def authenticate_user(self) -> bool:
         MAX_NUMBER_LOGIN_ATTEMPT = 3
         NUMBER_OF_LOGIN_ATTEMPT = 0
-        username = getpass.getuser()
-        password = getpass.getpass()
 
         while (NUMBER_OF_LOGIN_ATTEMPT < MAX_NUMBER_LOGIN_ATTEMPT):
+            password = getpass.getpass(f'password for {getpass.getuser()}: ')
             if password == 'terminal':
                 return True
             else:
+                print('Sorry, try again')
                 NUMBER_OF_LOGIN_ATTEMPT += 1
+        print(f'sudo: {NUMBER_OF_LOGIN_ATTEMPT} incorrect password attempts')
         return False
     
     def elevate_privilege(self):
