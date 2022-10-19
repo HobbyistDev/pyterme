@@ -44,15 +44,15 @@ class Shell:
                 prompt_text = f"{ANSI_COLOR_LIST['green'].fg}{self.username.lower()}@{platform.node()}{ANSI_COLOR_LIST['reset'].fg}"
 
                 if current_path == self.home_dir:
-                    self.prompt = f"{prompt_text}:~{prompt}"
+                    self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}~{ANSI_COLOR_LIST['reset'].fg}{prompt}"
                 else:
                     try:
-                        self.prompt = f"{prompt_text}:~/{current_path.relative_to(self.home_dir).as_posix()}{prompt}"
+                        self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}~/{current_path.relative_to(self.home_dir).as_posix()}{ANSI_COLOR_LIST['reset'].fg}{prompt}"
                     except ValueError:
-                        self.prompt = f"{prompt_text}:{current_path.as_posix()}{prompt}"
+                        self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}{current_path.as_posix()}{ANSI_COLOR_LIST['reset'].fg}{prompt}"
 
             if prompt_text_style == 'windows':
-                self.prompt = f"{pathlib.Path.cwd()}>"
+                self.prompt = f"{current_path}>"
 
         
         self.env_type = env
@@ -74,19 +74,12 @@ class Shell:
         while(self.is_running):
 
             basic_cmd_name = [cmd._name for cmd in COMMAND_LIST]
-            
-            
-
             #print(basic_cmd_list)
-
-            
 
             user_input = input(f'{self.prompt} ')
             self.parse_command_string(user_input)
 
-            current_path = pathlib.Path.cwd()
-            if current_path != self.home_dir:
-                self.set_prompt(self.prompt_symbol, self.env_type, prompt_text_style=self.prompt_text_style)
+            self.set_prompt(self.prompt_symbol, self.env_type, prompt_text_style=self.prompt_text_style)
 
     def shell_stop(self):
         pass 
