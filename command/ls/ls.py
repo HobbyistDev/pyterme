@@ -12,7 +12,7 @@ class ListFile(CommandSet):
             command_result = pathlib.Path('.').glob('*')
         elif len(args) == 1:
             if pathlib.Path(args[0]).exists():
-                command_result = pathlib.Path(args[0]).glob("*")
+                command_result = [file_path.name for file_path in pathlib.Path(args[0]).glob("*")]
 
         # TODO: check based on magic number not by ext 
         for path in command_result:
