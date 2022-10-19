@@ -21,7 +21,7 @@ class ChangeDirectory(CommandSet):
                 command_logger.info(f"{args[0]}: no such file or directory")
                 print(f"{args[0]}: no such file or directory")
 
-    def windows_specific_command(self, *args, **kwargs) -> str | None:
+    def windows_specific_command(self, *args, **kwargs) -> str:
         if (len(args) == 0) or list(args) == []:
             return pathlib.Path.cwd()
         else:
