@@ -20,6 +20,7 @@ class Shell:
     def __init__(self, prompt='$', env='default', username=None):
         self.username = getpass.getuser() if username is None else str(username)
         self.home_dir = pathlib.Path(__file__).parent
+        self.prompt_symbol = prompt
         self.set_prompt(prompt, env)
 
         self.is_running = True
@@ -35,7 +36,10 @@ class Shell:
             if current_path == self.home_dir:
                 self.prompt = f"{prompt_text}:~{prompt}"
             else:
-                self.prompt = f"{prompt_text}:{current_path}{prompt}"
+                try:
+                    self.prompt = f"{prompt_text}:~/{current_path.relative_to(self.home_dir).as_posix()}{prompt}"
+                except ValueError:
+                    self.prompt = f"{prompt_text}:{current_path.as_posix()}{prompt}"
         
         self.env_type = env
 
@@ -65,6 +69,10 @@ class Shell:
 
             user_input = input(f'{self.prompt} ')
             self.parse_command_string(user_input)
+
+            current_path = pathlib.Path.cwd()
+            if current_path != self.home_dir:
+                self.set_prompt(self.prompt_symbol, self.env_type)
 
     def shell_stop(self):
         pass 
