@@ -32,10 +32,10 @@ class Shell:
     
     def set_prompt(self, prompt='$', env='default', color='auto', prompt_text_style='unix'):
         """
-        This method set prompt text looks like.\n
-        @param  prompt  Set prompt_symbol in terminal(default: $)\n
-        @param  env     Set terminal_environment(default: 'default')\n
-        @param  color   Decide if terminal is using color or not(default: 'auto')\n
+        This method set prompt text looks like.
+        @param  prompt  Set prompt_symbol in terminal (default: $)
+        @param  env     Set terminal_environment (default: 'default')
+        @param  color   Decide if terminal is using color or not (default: 'auto')
         @param  prompt_text_style   Set prompt look to be POSIX-like or Windows-like(default: 'unix')
         """
         current_path = pathlib.Path.cwd()
