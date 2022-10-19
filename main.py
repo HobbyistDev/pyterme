@@ -9,6 +9,7 @@ import shlex
 import subprocess
 
 from command.command_list import COMMAND_LIST
+from core.shell_argument import args as shell_args
 from util.logger import logger, shell_logger
 from util.color import colored_text
 
@@ -200,20 +201,8 @@ class SuperUserShell(Shell):
                 break
                 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '--set-env', default='default', metavar='ENV',
-        help=(
-            '''set environment type in shell. This argument accept three option: \n
-            Windows, linux, and default (default=\'default\')'''))
-    parser.add_argument(
-        '--set-prompt-text-style', default='unix', metavar='prompt_style',
-        help='''This command used to change the prompt to be looks like POSIX or Windows Prompt'''
-    )
-    args = parser.parse_args()
-
-    terminal_env = args.set_env
-    terminal_prompt_text_style = args.set_prompt_text_style
+    terminal_env = shell_args.set_env
+    terminal_prompt_text_style = shell_args.set_prompt_text_style
 
     UserShell(env=terminal_env, prompt_text_style=terminal_prompt_text_style)
 
