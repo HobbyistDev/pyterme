@@ -10,7 +10,7 @@ import subprocess
 
 from command.command_list import COMMAND_LIST
 from util.logger import logger, shell_logger
-from util.color import print_colored
+from util.color import ANSI_COLOR_LIST, print_colored
 
 
 # TODO: add shell redirection feature (stdout, stderr, etc)
@@ -19,15 +19,17 @@ class Shell:
 
     def __init__(self, prompt='$', env='default', username=None):
         self.username = getpass.getuser() if username is None else str(username)
-        self.set_prompt(f'{self.username.lower()}{prompt}', env)
+        self.set_prompt(f'{self.username.lower()}@{platform.node()}:{prompt}', env)
 
         self.is_running = True
         self.shell_start()
         self.main_loop()
         self.shell_stop()
     
-    def set_prompt(self, prompt='$', env='default'):
-        self.prompt = prompt
+    def set_prompt(self, prompt='$', env='default', color='auto'):
+        if color == 'auto':
+            self.prompt = f"{ANSI_COLOR_LIST['green'].fg}{prompt}{ANSI_COLOR_LIST['reset'].fg}"
+        
         self.env_type = env
 
     def shell_start(self):
