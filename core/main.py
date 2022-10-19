@@ -10,6 +10,7 @@ import subprocess
 
 from command.command_list import COMMAND_LIST
 from core.shell_argument import args as shell_args
+from core.shell_conf_parser import shell_set_configuration
 from util.logger import logger, shell_logger
 from util.color import colored_text
 
@@ -201,8 +202,14 @@ class SuperUserShell(Shell):
                 break
                 
 def main():
-    terminal_env = shell_args.set_env
-    terminal_prompt_text_style = shell_args.set_prompt_text_style
+    if len(sys.argv) > 1:
+        terminal_env = shell_args.set_env
+        terminal_prompt_text_style = shell_args.set_prompt_text_style
+
+    elif shell_set_configuration():
+        shell_conf = shell_set_configuration()
+        terminal_env = shell_conf.get('environment')
+        terminal_prompt_text_style = shell_conf.get('prompt_text_style')
 
     UserShell(env=terminal_env, prompt_text_style=terminal_prompt_text_style)
 
