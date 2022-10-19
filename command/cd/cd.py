@@ -24,8 +24,10 @@ class ChangeDirectory(CommandSet):
     def windows_specific_command(self, *args, **kwargs) -> str:
         if (len(args) == 0) or list(args) == []:
             return pathlib.Path.cwd()
-        else:
-            command_logger.info(f"The system cannot find the path specified.")
-            print(f"The system cannot find the path specified.")
-
+        elif (len(args) == 1):
+            if (pathlib.Path(args[0]).exists()):
+                os.chdir(args[0])
+            else:
+                command_logger.info(f"{args[0]}: no such file or directory")
+                print(f"{args[0]}: no such file or directory")
     
