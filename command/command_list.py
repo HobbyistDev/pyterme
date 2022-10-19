@@ -11,6 +11,7 @@ from command.ls.ls import ListFile
 from command.move.move import Move
 from command.pwd.pwd import PrintWorkingDirectory
 from command.sleep.sleep import Sleep
+from command.uname.uname import UNIXName
 from command.which.which import Which
 
 COMMAND_LIST = [
@@ -25,5 +26,6 @@ COMMAND_LIST = [
     SHA1Sum,
     SHA256Sum,
     Sleep,
+    UNIXName,
     Which
 ]
