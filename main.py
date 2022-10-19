@@ -19,7 +19,8 @@ class Shell:
 
     def __init__(self, prompt='$', env='default', username=None):
         self.username = getpass.getuser() if username is None else str(username)
-        self.set_prompt(f'{self.username.lower()}@{platform.node()}:{prompt}', env)
+        self.home_dir = pathlib.Path(__file__).parent
+        self.set_prompt(prompt, env)
 
         self.is_running = True
         self.shell_start()
@@ -27,8 +28,14 @@ class Shell:
         self.shell_stop()
     
     def set_prompt(self, prompt='$', env='default', color='auto'):
-        if color == 'auto':
-            self.prompt = f"{ANSI_COLOR_LIST['green'].fg}{prompt}{ANSI_COLOR_LIST['reset'].fg}"
+        if color in ('auto', 'always'):
+            current_path = pathlib.Path.cwd()
+            prompt_text = f"{ANSI_COLOR_LIST['green'].fg}{self.username.lower()}@{platform.node()}{ANSI_COLOR_LIST['reset'].fg}"
+
+            if current_path == self.home_dir:
+                self.prompt = f"{prompt_text}:~{prompt}"
+            else:
+                self.prompt = f"{prompt_text}:{current_path}{prompt}"
         
         self.env_type = env
 
