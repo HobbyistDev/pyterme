@@ -10,7 +10,7 @@ import subprocess
 
 from command.command_list import COMMAND_LIST
 from util.logger import logger, shell_logger
-from util.color import ANSI_COLOR_LIST, print_colored
+from util.color import colored_text
 
 
 # TODO: add shell redirection feature (stdout, stderr, etc)
@@ -41,15 +41,15 @@ class Shell:
 
         if color in ('auto', 'always'):
             if prompt_text_style == 'unix':
-                prompt_text = f"{ANSI_COLOR_LIST['green'].fg}{self.username.lower()}@{platform.node()}{ANSI_COLOR_LIST['reset'].fg}"
+                prompt_text = colored_text(f"{self.username.lower()}@{platform.node()}", 'green')
 
                 if current_path == self.home_dir:
-                    self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}~{ANSI_COLOR_LIST['reset'].fg}{prompt}"
+                    self.prompt = f"{prompt_text}:{colored_text('~', 'blue')}{prompt}"
                 else:
                     try:
-                        self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}~/{current_path.relative_to(self.home_dir).as_posix()}{ANSI_COLOR_LIST['reset'].fg}{prompt}"
+                        self.prompt = f"{prompt_text}:{colored_text(f'~/{current_path.relative_to(self.home_dir).as_posix()}', 'blue')}{prompt}"
                     except ValueError:
-                        self.prompt = f"{prompt_text}:{ANSI_COLOR_LIST['blue'].fg}{current_path.as_posix()}{ANSI_COLOR_LIST['reset'].fg}{prompt}"
+                        self.prompt = f"{prompt_text}:{colored_text(current_path.as_posix(), 'blue')}{prompt}"
 
             if prompt_text_style == 'windows':
                 self.prompt = f"{current_path}>"
@@ -87,7 +87,7 @@ class Shell:
     def to_stdout(self, input_):
         if input:
             #print(str(input_), end='', file=sys.stdout)
-            print_colored(str(input_), end='', file=sys.stdout)
+            print(str(input_), end='', file=sys.stdout)
     
     def to_stderr(self, input_):
          if input:
