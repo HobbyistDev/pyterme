@@ -113,10 +113,6 @@ class Shell:
 
             elif IS_CMD_IN_BASIC_CMD_lIST:
                 IS_CMD_IN_BASIC_CMD_lIST = False
-                    
-            elif shutil.which(user_cmd[0]):
-                shell_logger.info("Executed from shutil.which")
-                subprocess.run(user_input)#, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
             elif user_input in ('quit', 'exit', 'exit()', 'q'):
                 self.is_running = False
@@ -126,6 +122,10 @@ class Shell:
                 if is_authenticated:
                     self.elevate_privilege()
 
+            elif shutil.which(user_cmd[0]):
+                shell_logger.info("Executed from shutil.which")
+                subprocess.run(user_input)#, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
             else:
                 shell_logger.info(f"{user_cmd[0]} not found")
                 print(f'{user_cmd[0]}: not found')
