@@ -99,3 +99,11 @@ def print_colored(text, text_color, color_mode='auto', *args, **kwargs):
             print(f"{text}", *args, **kwargs)
     else:
         print(f"{text}", *args, **kwargs)
+
+def colored_text(text, text_color, text_style='default', color_type='foreground'):
+    result_text_color = ''
+    if color_type == 'foreground':
+        result_text_color = f"{ANSI_COLOR_LIST[text_color].fg}"
+    elif color_type == 'background':
+        result_text_color = f"{ANSI_COLOR_LIST[text_color].bg}"
+    return f"{result_text_color}{text}{ANSI_COLOR_LIST['reset'].fg}"
