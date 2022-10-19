@@ -17,29 +17,43 @@ from util.color import ANSI_COLOR_LIST, print_colored
 class Shell:
     _privilege = 'user'
 
-    def __init__(self, prompt='$', env='default', username=None):
+    def __init__(self, prompt='$', env='default', username=None, prompt_text_style='unix'):
         self.username = getpass.getuser() if username is None else str(username)
-        self.home_dir = pathlib.Path(__file__).parent
+        self.home_dir = pathlib.Path().absolute()
         self.prompt_symbol = prompt
-        self.set_prompt(prompt, env)
+        self.prompt_text_style = prompt_text_style
+        self.set_prompt(prompt, env, prompt_text_style=self.prompt_text_style)
 
         self.is_running = True
         self.shell_start()
         self.main_loop()
         self.shell_stop()
     
-    def set_prompt(self, prompt='$', env='default', color='auto'):
-        if color in ('auto', 'always'):
-            current_path = pathlib.Path.cwd()
-            prompt_text = f"{ANSI_COLOR_LIST['green'].fg}{self.username.lower()}@{platform.node()}{ANSI_COLOR_LIST['reset'].fg}"
+    def set_prompt(self, prompt='$', env='default', color='auto', prompt_text_style='unix'):
+        """
+        This method set prompt text looks like.\n
+        @param  prompt  Set prompt_symbol in terminal(default: $)\n
+        @param  env     Set terminal_environment(default: 'default')\n
+        @param  color   Decide if terminal is using color or not(default: 'auto')\n
+        @param  prompt_text_style   Set prompt look to be POSIX-like or Windows-like(default: 'unix')
+        """
+        current_path = pathlib.Path.cwd()
 
-            if current_path == self.home_dir:
-                self.prompt = f"{prompt_text}:~{prompt}"
-            else:
-                try:
-                    self.prompt = f"{prompt_text}:~/{current_path.relative_to(self.home_dir).as_posix()}{prompt}"
-                except ValueError:
-                    self.prompt = f"{prompt_text}:{current_path.as_posix()}{prompt}"
+        if color in ('auto', 'always'):
+            if prompt_text_style == 'unix':
+                prompt_text = f"{ANSI_COLOR_LIST['green'].fg}{self.username.lower()}@{platform.node()}{ANSI_COLOR_LIST['reset'].fg}"
+
+                if current_path == self.home_dir:
+                    self.prompt = f"{prompt_text}:~{prompt}"
+                else:
+                    try:
+                        self.prompt = f"{prompt_text}:~/{current_path.relative_to(self.home_dir).as_posix()}{prompt}"
+                    except ValueError:
+                        self.prompt = f"{prompt_text}:{current_path.as_posix()}{prompt}"
+
+            if prompt_text_style == 'windows':
+                self.prompt = f"{pathlib.Path.cwd()}>"
+
         
         self.env_type = env
 
@@ -72,7 +86,7 @@ class Shell:
 
             current_path = pathlib.Path.cwd()
             if current_path != self.home_dir:
-                self.set_prompt(self.prompt_symbol, self.env_type)
+                self.set_prompt(self.prompt_symbol, self.env_type, prompt_text_style=self.prompt_text_style)
 
     def shell_stop(self):
         pass 
@@ -198,9 +212,16 @@ def main():
         help=(
             '''set environment type in shell. This argument accept three option: \n
             Windows, linux, and default (default=\'default\')'''))
+    parser.add_argument(
+        '--set-prompt-text-style', default='unix', metavar='prompt_style',
+        help='''This command used to change the prompt to be looks like POSIX or Windows Prompt'''
+    )
     args = parser.parse_args()
 
-    UserShell(env=args.set_env)
+    terminal_env = args.set_env
+    terminal_prompt_text_style = args.set_prompt_text_style
+
+    UserShell(env=terminal_env, prompt_text_style=terminal_prompt_text_style)
 
 if __name__ == '__main__':
     main()
