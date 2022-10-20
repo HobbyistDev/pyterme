@@ -1,6 +1,7 @@
 import platform
 import os
 
+
 class Color:
     foreground_code = None
     background_code = None
@@ -27,7 +28,6 @@ class Color:
         self.fg_bg = f"\033[{self.style_code};{self.background_code};{self.foreground_code}m"
         self.bg = f"\033[{self.style_code};{self.background_code}m"
 
-
     def style_code_selector(self, style=None):
         # TODO: make all style list in dictionary
         STYLE_TO_STYLE_CODE_MAPPER = {
@@ -44,9 +44,6 @@ class Color:
     
 
 # source: https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
-
-
-
 
 ANSI_COLOR_LIST = {
     'red' : Color('red', 31, 41),
@@ -70,7 +67,6 @@ ANSI_COLOR_LIST = {
     'bright_white' : Color('bright_white', 97),
 }
 
-
 ANSI_COLOR_CODE = {
     'red': '\033[0;091m',
     'green': '\033[0;092m',
@@ -79,7 +75,6 @@ ANSI_COLOR_CODE = {
     'cyan': '\033[0;036m'
 
 }
-
 
 def print_colored(text, text_color, color_mode='auto', *args, **kwargs):
     platform_name = platform.platform()
