@@ -67,7 +67,9 @@ class Shell:
         """
         print('Welcome to this terminal!')
         print('Current Setting: ')
-        print(f'ENV: {self.env_type}') 
+        print(f'ENV: {self.env_type}', end=' | ') 
+        print(f'Prompt_symbol: {self.prompt_symbol}', end=' | ')
+        print(f'Prompt_style: {self.prompt_text_style}')
 
    
 
