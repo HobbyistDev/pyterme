@@ -1,5 +1,6 @@
 import platform
 from command.model import CommandSet
+from util.pipe_util import to_stdout
 
 class UNIXName(CommandSet):
     _name = 'uname'
@@ -11,5 +12,5 @@ class UNIXName(CommandSet):
 
         if '-a' in args:
             for info_ in uname_info:
-                print(info_, end=' ')
-            print('\n', end='')
+                to_stdout(info_, end=' ', stdout_target=self.stdout_target)
+            to_stdout('\n', end='', stdout_target=self.stdout_target)

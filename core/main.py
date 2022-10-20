@@ -13,6 +13,7 @@ from core.shell_argument import args as shell_args
 from core.shell_conf_parser import shell_set_configuration
 from util.logger import logger, shell_logger
 from util.color import colored_text
+from util.pipe_util import to_stdout, to_stderr
 
 
 # TODO: add shell redirection feature (stdout, stderr, etc)
@@ -88,15 +89,6 @@ class Shell:
     def shell_stop(self):
         pass 
 
-    def to_stdout(self, input_):
-        if input:
-            #print(str(input_), end='', file=sys.stdout)
-            print(str(input_), end='', file=sys.stdout)
-    
-    def to_stderr(self, input_):
-         if input:
-            print(str(input_), end='', file=sys.stderr)
-    
     def parse_command_string(self, user_input):
         program_input = []
         
@@ -110,6 +102,19 @@ class Shell:
         program_input.extend(user_cmd)
 
         IS_CMD_IN_BASIC_CMD_lIST = False
+
+        # pipe handle
+        if '>' in user_cmd and user_cmd.index('>') < len(user_cmd) and user_cmd.index('>') != 0 and user_cmd[user_cmd.index('>') - 1] != '2':
+            self.stdout_target = user_cmd[user_cmd.index('>') + 1]
+            self.stdout_target = pathlib.Path(self.stdout_target).open('w')
+            shell_logger.info(f'stdout_target: {self.stdout_target}')
+
+        elif '|' in user_cmd and user_cmd.index('|') < len(user_cmd) and user_cmd.index('|') != 0:
+            self.pipe_target = user_cmd[user_cmd.index('|') + 1]
+
+        elif '2>' in user_cmd and user_cmd.index('2>') < len(user_cmd) and user_cmd.index('2>') != 0:
+            self.stderr_target = user_cmd[user_cmd.index('2>') + 1]
+
         
         if user_input == '' or len(user_input[0]) == 0:
             pass 
@@ -121,7 +126,10 @@ class Shell:
                 if user_cmd[0] == command_name or user_cmd[0] in command_aliases:
                     shell_logger.info(f"{user_cmd[0]} executed from basic_cmd_list: {command_name}")
                     cmd_index = basic_cmd_list.index(cmd)
-                    COMMAND_LIST[cmd_index](env=self.env_type).run_command(*user_cmd[1:])
+
+                    command_to_run = COMMAND_LIST[cmd_index](env=self.env_type)
+                    command_to_run.set_pipe(self.stdout_target)
+                    command_to_run.run_command(*user_cmd[1:])
                     IS_CMD_IN_BASIC_CMD_lIST = True
                     break
                 else:
@@ -147,7 +155,8 @@ class Shell:
 
             else:
                 shell_logger.info(f"{user_cmd[0]} not found")
-                print(f'{user_cmd[0]}: not found')
+                #print(f'{user_cmd[0]}: not found')
+                to_stdout(f'{user_cmd[0]}: not found', stdout_target=self.stdout_target)
 
     def authenticate_user(self) -> bool:
         MAX_NUMBER_LOGIN_ATTEMPT = 3
@@ -202,7 +211,7 @@ class SuperUserShell(Shell):
                 i = i + 1
             else:
                 break
-                
+
 def main():
     if len(sys.argv) > 1:
         terminal_prompt_symbol = shell_args.set_prompt_symbol

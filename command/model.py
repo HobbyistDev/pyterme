@@ -1,4 +1,7 @@
+import sys
+
 from util.logger import command_logger
+from util.pipe_util import to_stdout, to_stderr
 
 class CommandSet:
     _name = None
@@ -10,6 +13,11 @@ class CommandSet:
     def __init__(self, env='default') -> None:
         self.env_type = env
         self.supported_env = ['default']
+
+        # pipe configuration
+        self.stdout_target = sys.stdout
+        self.stderr_target = sys.stderr
+
         self.__command_post_init()
     
     def __command_post_init(self):
@@ -22,6 +30,10 @@ class CommandSet:
         '''
         command_logger.error("Not Implemented")
         raise NotImplementedError
+
+    def set_pipe(self, stdout_=sys.stdout, stderr_=sys.stderr):
+        self.stdout_target = stdout_
+        self.stderr_target = stderr_
 
     def run_command(self, *args, **kwargs):
         if isinstance(self, list):
@@ -41,7 +53,7 @@ class CommandSet:
             command_result = self.command(*args, **kwargs)
         
         if command_result:
-            print(command_result)
+            to_stdout(command_result, stdout_target=self.stdout_target)
         
         
     def linux_specific_command(self, *args, **kwargs):
