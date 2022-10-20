@@ -150,11 +150,16 @@ class Shell:
             
             elif shutil.which(user_cmd[0]):
                 shell_logger.info("Executed from shutil.which")
-                process = subprocess.run(user_input, capture_output=True)
-                if process.stdout:
-                    to_stdout(process.stdout.decode(), stdout_target=self.stdout_target)
-                if process.stderr:
-                    to_stderr(process.stderr.decode(), stderr_target=self.stderr_target)
+
+                # set pipe only if stdout_target and stderr_target is not the same as the default
+                if self.stdout_target == sys.stdout and self.stderr_target == sys.stderr:
+                    subprocess.run(user_input)
+                else:
+                    process = subprocess.run(user_input, capture_output=True)
+                    if process.stdout:
+                        to_stdout(process.stdout.decode(), stdout_target=self.stdout_target)
+                    if process.stderr:
+                        to_stderr(process.stderr.decode(), stderr_target=self.stderr_target)
                 
             
             elif user_cmd[0] in ('sudo', 'su'):
