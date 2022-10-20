@@ -1,4 +1,5 @@
 import logging
+from core.shell_argument import args as shell_args
 
 # app logger
 logger = logging.getLogger(__name__)
@@ -28,7 +29,7 @@ shell_logger.setLevel("DEBUG")
 shell_formatter = logging.Formatter("[shell] [%(levelname)s] %(message)s")
 
 shell_stream_handler = logging.StreamHandler()
-shell_stream_handler.setLevel("WARNING")
+shell_stream_handler.setLevel(shell_args.log_level.upper() or "WARNING")  # FIXME: handle invalid value
 shell_stream_handler.setFormatter(shell_formatter)
 
 

@@ -3,6 +3,10 @@ import argparse
 parser = argparse.ArgumentParser(
     prog='pyterme', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+parser.add_argument(
+    '--log-level', default='warning', metavar='level', 
+    help='Set log level to a levelname. This argument only take effect in stdout')
+
 # shell customization
 shell_customization_parser = parser.add_argument_group('Shell Customization Option')
 shell_customization_parser.add_argument(
