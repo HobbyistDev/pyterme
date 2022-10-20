@@ -21,7 +21,7 @@ class Shell:
 
     def __init__(self, prompt='$', env='default', username=None, prompt_text_style='unix'):
         self.username = getpass.getuser() if username is None else str(username)
-        self.home_dir = pathlib.Path().absolute()
+        self.home_dir = pathlib.Path().resolve()
         self.prompt_symbol = prompt
         self.prompt_text_style = prompt_text_style
         self.set_prompt(prompt, env, prompt_text_style=self.prompt_text_style)
