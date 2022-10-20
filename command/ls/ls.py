@@ -16,12 +16,19 @@ class ListFile(CommandSet):
 
         # TODO: check based on magic number not by ext 
         for path in command_result:
+            # if path is directory
             if path.is_dir():
                 print_colored(path, 'bright_blue')
+
+            # if path is executables
             elif path.suffix in ('.exe', '.com', '.bat', '.vbs'):
                 print_colored(path, 'bright_green')
+
+            # if path is archive
             elif path.suffix in ('zip', '.7z'):
                 print_colored(path, 'bright_red')
+            
+            # if path is regular file
             elif path.is_file():
                 print(path)
             
