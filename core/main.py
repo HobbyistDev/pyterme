@@ -110,6 +110,8 @@ class Shell:
         # pipe handle
         if '>' in user_cmd and user_cmd.index('>') < len(user_cmd) and user_cmd.index('>') != 0 and user_cmd[user_cmd.index('>') - 1] != '2':
             self.stdout_target = user_cmd[user_cmd.index('>') + 1]
+            shell_logger.debug(f"pipe: trying to open {self.stdout_target}")
+            
             self.stdout_target = pathlib.Path(self.stdout_target).open('w')
             shell_logger.info(f'stdout_target: {self.stdout_target}')
 

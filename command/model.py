@@ -40,6 +40,7 @@ class CommandSet:
             raise TypeError(f'Wrong self type: {type(self)}')
         
         command_result = None
+        command_logger.debug(f"CommandSet: trying to run {self._name}")
         if self.env_type in self.supported_env:
             
             if self.env_type == 'linux':
