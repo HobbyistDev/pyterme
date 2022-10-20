@@ -203,15 +203,18 @@ class SuperUserShell(Shell):
                 
 def main():
     if len(sys.argv) > 1:
+        terminal_prompt_symbol = shell_args.set_prompt_symbol
         terminal_env = shell_args.set_env
         terminal_prompt_text_style = shell_args.set_prompt_text_style
 
     elif shell_set_configuration():
         shell_conf = shell_set_configuration()
+        terminal_prompt_symbol = shell_conf.get('prompt_symbol')
         terminal_env = shell_conf.get('environment')
         terminal_prompt_text_style = shell_conf.get('prompt_text_style')
 
-    UserShell(env=terminal_env, prompt_text_style=terminal_prompt_text_style)
+    UserShell(
+        prompt=terminal_prompt_symbol, env=terminal_env, prompt_text_style=terminal_prompt_text_style)
 
 if __name__ == '__main__':
     main()
