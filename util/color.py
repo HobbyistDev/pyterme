@@ -119,4 +119,7 @@ def colored_text(text, text_color, text_style=None, color_type='foreground'):
         elif color_type == 'background':
             result_text_color = str(color_object.bg)
 
-    return f"{result_text_color}{text}{ANSI_COLOR_LIST['reset'].fg}"
+        return f"{result_text_color}{text}{ANSI_COLOR_LIST['reset'].fg}"
+    
+    else:
+        return text
