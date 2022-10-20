@@ -41,6 +41,11 @@ class Color:
     
     def change_style(self, style):
         self.style_code_selector(style)
+
+        # updated value
+        self.fg = f"\033[{self.style_code};{self.foreground_code}m"
+        self.fg_bg = f"\033[{self.style_code};{self.background_code};{self.foreground_code}m"
+        self.bg = f"\033[{self.style_code};{self.background_code}m"
     
 
 # source: https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
@@ -95,10 +100,15 @@ def print_colored(text, text_color, color_mode='auto', *args, **kwargs):
     else:
         print(f"{text}", *args, **kwargs)
 
-def colored_text(text, text_color, text_style='default', color_type='foreground'):
+def colored_text(text, text_color, text_style=None, color_type='foreground'):
     result_text_color = ''
-    if color_type == 'foreground':
-        result_text_color = f"{ANSI_COLOR_LIST[text_color].fg}"
-    elif color_type == 'background':
-        result_text_color = f"{ANSI_COLOR_LIST[text_color].bg}"
+    if text_color in ANSI_COLOR_LIST:
+        color_object = ANSI_COLOR_LIST[text_color]
+        color_object.change_style(text_style)
+
+        if color_type == 'foreground':
+            result_text_color = str(color_object.fg)
+        elif color_type == 'background':
+            result_text_color = str(color_object.bg)
+
     return f"{result_text_color}{text}{ANSI_COLOR_LIST['reset'].fg}"
