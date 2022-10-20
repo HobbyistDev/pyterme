@@ -101,6 +101,14 @@ def print_colored(text, text_color, color_mode='auto', *args, **kwargs):
         print(f"{text}", *args, **kwargs)
 
 def colored_text(text, text_color, text_style=None, color_type='foreground'):
+    """
+    This function return string that contain ANSI color value that can be printed in terminal if
+    the terminal support ANSI code value.
+
+    @params text: text to color
+    @params text_style: set output text style. Currently available option: 'bold', 'italic', 'underline', None (default: None)
+    @params color_type: set where the text will be colored. Current available option: 'foreground', 'background' (default: 'foreground')
+    """
     result_text_color = ''
     if text_color in ANSI_COLOR_LIST:
         color_object = ANSI_COLOR_LIST[text_color]
