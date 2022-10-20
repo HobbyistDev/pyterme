@@ -27,6 +27,10 @@ class Shell:
         self.prompt_text_style = prompt_text_style
         self.set_prompt(prompt, env, prompt_text_style=self.prompt_text_style)
 
+        # default pipe
+        self.stdout_target = sys.stdout
+        self.stderr_target = sys.stderr
+
         self.is_running = True
         self.shell_start()
         self.main_loop()
@@ -146,7 +150,12 @@ class Shell:
             
             elif shutil.which(user_cmd[0]):
                 shell_logger.info("Executed from shutil.which")
-                subprocess.run(user_input)#, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                process = subprocess.run(user_input, capture_output=True)
+                if process.stdout:
+                    to_stdout(process.stdout.decode(), stdout_target=self.stdout_target)
+                if process.stderr:
+                    to_stderr(process.stderr.decode(), stderr_target=self.stderr_target)
+                
             
             elif user_cmd[0] in ('sudo', 'su'):
                 is_authenticated = self.authenticate_user()
