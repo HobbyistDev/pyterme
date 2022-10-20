@@ -24,9 +24,7 @@ class Color:
         self.style_code = 0
         self.style_code_selector()
 
-        self.fg = f"\033[{self.style_code};{self.foreground_code}m"
-        self.fg_bg = f"\033[{self.style_code};{self.background_code};{self.foreground_code}m"
-        self.bg = f"\033[{self.style_code};{self.background_code}m"
+        self._set_fg_and_bg_attribute()
 
     def style_code_selector(self, style=None):
         # TODO: make all style list in dictionary
@@ -41,12 +39,12 @@ class Color:
     
     def change_style(self, style):
         self.style_code_selector(style)
+        self._set_fg_and_bg_attribute()
 
-        # updated value
+    def _set_fg_and_bg_attribute(self):
         self.fg = f"\033[{self.style_code};{self.foreground_code}m"
         self.fg_bg = f"\033[{self.style_code};{self.background_code};{self.foreground_code}m"
         self.bg = f"\033[{self.style_code};{self.background_code}m"
-    
 
 # source: https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
