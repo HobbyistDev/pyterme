@@ -38,6 +38,7 @@ class ListFile(CommandSet):
 
 def get_configuration():
     # TODO: use __file__ alternative as __file__ didn't always exist
+    json_conf_file = {}
     with open(pathlib.Path(__file__).parent / "ls_conf.json") as conf_file:
         json_conf_file = json.load(conf_file)
     return json_conf_file
