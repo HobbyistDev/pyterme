@@ -1,0 +1,7 @@
+{
+    "color": {
+        "executable": "green",
+        "archive": "red",
+        "directory": "blue"
+    }
+}
