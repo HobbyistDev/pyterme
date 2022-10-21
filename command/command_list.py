@@ -10,6 +10,7 @@ from command.hashsum.hashsum import (
 from command.ls.ls import ListFile
 from command.move.move import Move
 from command.pwd.pwd import PrintWorkingDirectory
+from command.rm.rm import RemoveFile
 from command.sleep.sleep import Sleep
 from command.touch.touch import Touch
 from command.uname.uname import UNIXName
@@ -24,6 +25,7 @@ COMMAND_LIST = [
     ListFile,
     Move,
     PrintWorkingDirectory,
+    RemoveFile,
     SHA1Sum,
     SHA256Sum,
     Sleep,

@@ -10,4 +10,4 @@ class RemoveFile(CommandSet):
         if (len(args) > 0):
             file_path = pathlib.Path(args[0])
             if file_path.exists():
-                pass 
+                file_path.unlink()
