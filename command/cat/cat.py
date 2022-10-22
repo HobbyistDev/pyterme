@@ -13,7 +13,8 @@ class Concatenate(CommandSet):
         if len(args) == 1:
             if pathlib.Path(args[0]).exists():
                 with open(pathlib.Path(args[0])) as file:
-                    to_stdout(file.read(), stdout_target=self.stdout_target)
+                    target_file = file.read()
+                return target_file
         if len(args) == 0:
             # if none of stdout redirection
             for line in fileinput.input():

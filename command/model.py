@@ -35,11 +35,11 @@ class CommandSet:
         self.stdout_target = stdout_
         self.stderr_target = stderr_
 
-    def run_command(self, *args, **kwargs):
+    def run_command(self, *args, **kwargs): 
         if isinstance(self, list):
             raise TypeError(f'Wrong self type: {type(self)}')
         
-        command_result = None
+        command_result = None, None
         command_logger.debug(f"CommandSet: trying to run {self._name}")
         if self.env_type in self.supported_env:
             
@@ -54,7 +54,11 @@ class CommandSet:
             command_result = self.command(*args, **kwargs)
         
         if command_result:
-            to_stdout(command_result, stdout_target=self.stdout_target)
+            #to_stdout(command_result, stdout_target=self.stdout_target)
+            # assume all command returned in stdout
+            return command_result, None
+        else:
+            return None, None
         
         
     def linux_specific_command(self, *args, **kwargs):
