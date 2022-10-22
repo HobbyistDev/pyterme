@@ -117,13 +117,12 @@ class Shell:
         program_input.extend(user_cmd)
 
         self.IS_CMD_IN_BASIC_CMD_lIST = False
- 
+        
         if user_input == '' or len(user_input[0]) == 0:
             pass 
 
-        elif user_input[0] in ('quit', 'exit', 'exit()', 'q'):
+        elif user_input in ('quit', 'exit', 'q', 'exit()'):
             self.is_running = False
-
         
         else:
             shell_lexer = ShellLexer(user_input, self.env_type)
