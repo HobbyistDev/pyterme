@@ -21,12 +21,22 @@ from util.pipe_util import to_stdout, to_stderr
 class Shell:
     _privilege = 'user'
 
-    def __init__(self, prompt='$', env='default', username=None, prompt_text_style='unix'):
+    def __init__(self, prompt=None, env='default', username=None, prompt_text_style='unix'):
         self.username = getpass.getuser() if username is None else str(username)
         self.home_dir = pathlib.Path().resolve()
-        self.prompt_symbol = prompt
+
+        # prompt setting
+        self.prompt_symbol = '$'
+        if prompt is None:
+            if prompt_text_style == 'default':
+                self.prompt_symbol = '$'
+            elif prompt_text_style == 'windows':
+                self.prompt_symbol = '>'
+        else:
+            self.prompt_symbol = prompt
+        
         self.prompt_text_style = prompt_text_style
-        self.set_prompt(prompt, env, prompt_text_style=self.prompt_text_style)
+        self.set_prompt(self.prompt_symbol, env, prompt_text_style=self.prompt_text_style)
 
         # default pipe
         self.stdout_target = sys.stdout
@@ -60,7 +70,7 @@ class Shell:
                         self.prompt = f"{prompt_text}:{colored_text(current_path.as_posix(), 'blue')}{prompt}"
 
             if prompt_text_style == 'windows':
-                self.prompt = f"{current_path}>"
+                self.prompt = f"{current_path}{prompt}"
 
         
         self.env_type = env

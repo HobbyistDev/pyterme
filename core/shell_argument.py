@@ -21,7 +21,7 @@ shell_customization_parser.add_argument(
 )
 
 shell_customization_parser.add_argument(
-    '--set-prompt-symbol', default='$', metavar='symbol',
+    '--set-prompt-symbol', default=None, metavar='symbol',
     help='Set particular prompt symbol to terminal. This option didn\'t take effect when --set-prompt-text-style set to windows'
 )
 

@@ -1,6 +1,6 @@
 {
     "shell": {
-        "prompt_symbol": "$",
+        "prompt_symbol": null,
         "environment": "default",
         "prompt_text_style": "unix"
     }
