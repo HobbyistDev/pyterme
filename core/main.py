@@ -229,6 +229,7 @@ class ShellLexer:
     
     def lex_token(self):
         self.token_list = [command.strip() for command in re.split(r'(2\>|\>|\|)', self.text) if isinstance(command, str)]
+        shell_logger.debug(f'token list: {self.token_list}')
         return self.token_list
 
 
