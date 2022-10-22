@@ -2,6 +2,7 @@ from command.cat.cat import Concatenate
 from command.cd.cd import ChangeDirectory
 from command.clear.clear import Clear
 from command.echo.echo import Echo
+from command.grep.grep import Grep
 from command.hashsum.hashsum import (
     Base64,
     SHA1Sum, 
@@ -22,6 +23,7 @@ COMMAND_LIST = [
     Clear,
     Concatenate,
     Echo,
+    Grep,
     ListFile,
     Move,
     PrintWorkingDirectory,
