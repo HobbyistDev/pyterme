@@ -175,7 +175,7 @@ class ShellLexer:
                         token_index_got_pipe = token_index
                         command_result = self.command_runner(self.token_list[token_index - 1])
                         to_stderr(command_result[1], stderr_target=file)
-                elif token_index_got_pipe + 1:
+                elif token_index == token_index_got_pipe + 1:
                     continue
                 else:
                     command_result = self.command_runner(token)
