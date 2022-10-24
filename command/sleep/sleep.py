@@ -10,7 +10,7 @@ class Sleep(CommandSet):
         for time_arg in time_num:
             time_factor = 0
             time_number, suffix = re.match(
-                r'(?P<time>\d+)(?P<suffix>(s|h|m)?)', str(time_arg)).group(
+                r'(?P<time>[\d\.]+)(?P<suffix>(s|h|m)?)', str(time_arg)).group(
                     'time', 'suffix')
 
             if suffix == 'h':
