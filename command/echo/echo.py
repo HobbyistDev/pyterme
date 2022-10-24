@@ -1,5 +1,6 @@
 from command.model import CommandSet
 
+
 class Echo(CommandSet):
     _name = 'echo'
 

@@ -2,6 +2,7 @@ import platform
 from command.model import CommandSet
 from util.pipe_util import to_stdout
 
+
 class UNIXName(CommandSet):
     _name = 'uname'
 

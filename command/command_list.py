@@ -5,7 +5,7 @@ from command.echo.echo import Echo
 from command.grep.grep import Grep
 from command.hashsum.hashsum import (
     Base64,
-    SHA1Sum, 
+    SHA1Sum,
     SHA256Sum
 )
 from command.ls.ls import ListFile

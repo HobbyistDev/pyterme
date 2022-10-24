@@ -1,6 +1,7 @@
 import pathlib
 from command.model import CommandSet
 
+
 class Touch(CommandSet):
     _name = 'touch'
 

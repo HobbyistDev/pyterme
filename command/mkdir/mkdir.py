@@ -1,6 +1,7 @@
 import pathlib
 from command.model import CommandSet
 
+
 class MakeDirectory(CommandSet):
     _name = 'mkdir'
 

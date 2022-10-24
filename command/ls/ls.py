@@ -1,8 +1,8 @@
 import json
 import pathlib
-import os
 from command.model import CommandSet
 from util.color import colored_text
+
 
 class ListFile(CommandSet):
     _name = 'ls'
@@ -16,7 +16,7 @@ class ListFile(CommandSet):
             if pathlib.Path(args[0]).exists():
                 command_result = [file_path.name for file_path in pathlib.Path(args[0]).glob("*")]
 
-        # TODO: check based on magic number not by ext 
+        # TODO: check based on magic number not by ext
         color_conf = ls_conf.get('color', {})
         for path in command_result:
             # if path is directory
@@ -30,11 +30,12 @@ class ListFile(CommandSet):
 
             # if path is archive
             elif path.suffix in ('zip', '.7z'):
-                print(colored_text(path, color_conf.get('archive') or'bright_red'))
-            
+                print(colored_text(path, color_conf.get('archive') or 'bright_red'))
+
             # if path is regular file
             elif path.is_file():
                 print(path)
+
 
 def get_configuration():
     # TODO: use __file__ alternative as __file__ didn't always exist

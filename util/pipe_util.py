@@ -4,6 +4,7 @@ import sys
 
 from util.logger import shell_logger
 
+
 def to_stdout(input_, end='\n', stdout_target=sys.stdout):
     if stdout_target != sys.stdout:
         if isinstance(input_, (io.StringIO, io.FileIO, io.TextIOWrapper)):
@@ -19,12 +20,13 @@ def to_stdout(input_, end='\n', stdout_target=sys.stdout):
     elif isinstance(stdout_target, str) and pathlib.Path(stdout_target).exists():
         with pathlib.Path(stdout_target).open('w') as file:
             print(str(input_), end=end, file=file, flush=True)
-    
+
     else:
         if input_:
             print(str(input_), end=end)
 
-def to_stderr(input_, end='\n',stderr_target=sys.stderr):
+
+def to_stderr(input_, end='\n', stderr_target=sys.stderr):
     if stderr_target != sys.stderr:
         if input_:
             print(str(input_), end=end, file=stderr_target)

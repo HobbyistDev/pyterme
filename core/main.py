@@ -1,5 +1,3 @@
-import argparse
-import functools
 import getpass
 import pathlib
 import platform
@@ -12,7 +10,7 @@ import subprocess
 from command.command_list import COMMAND_LIST
 from core.shell_argument import args as shell_args
 from core.shell_conf_parser import shell_set_configuration
-from util.logger import logger, shell_logger
+from util.logger import shell_logger
 from util.color import colored_text
 from util.pipe_util import to_stdout, to_stderr
 
@@ -21,7 +19,8 @@ from util.pipe_util import to_stdout, to_stderr
 class Shell:
     _privilege = 'user'
 
-    def __init__(self, prompt=None, env='default', username=None, prompt_text_style='unix'):
+    def __init__(self, prompt=None, env='default', username=None,
+                 prompt_text_style='unix'):
         self.username = getpass.getuser() if username is None else str(username)
         self.home_dir = pathlib.Path().resolve()
 
@@ -34,9 +33,10 @@ class Shell:
                 self.prompt_symbol = '>'
         else:
             self.prompt_symbol = prompt
-        
+
         self.prompt_text_style = prompt_text_style
-        self.set_prompt(self.prompt_symbol, env, prompt_text_style=self.prompt_text_style)
+        self.set_prompt(
+            self.prompt_symbol, env, prompt_text_style=self.prompt_text_style)
 
         # default pipe
         self.stdout_target = sys.stdout
@@ -46,14 +46,17 @@ class Shell:
         self.shell_start()
         self.main_loop()
         self.shell_stop()
-    
-    def set_prompt(self, prompt='$', env='default', color='auto', prompt_text_style='unix'):
+
+    def set_prompt(self, prompt='$', env='default', color='auto',
+                   prompt_text_style='unix'):
         """
         This method set prompt text looks like.
         @param  prompt  Set prompt_symbol in terminal (default: $)
         @param  env     Set terminal_environment (default: 'default')
-        @param  color   Decide if terminal is using color or not (default: 'auto')
-        @param  prompt_text_style   Set prompt look to be POSIX-like or Windows-like(default: 'unix')
+        @param  color   Decide if terminal is using color or not \
+                        (default: 'auto')
+        @param  prompt_text_style   Set prompt look to be POSIX-like \
+                                    or Windows-like(default: 'unix')
         """
         current_path = pathlib.Path.cwd()
 
@@ -72,7 +75,6 @@ class Shell:
             if prompt_text_style == 'windows':
                 self.prompt = f"{current_path}{prompt}"
 
-        
         self.env_type = env
 
     def shell_start(self):
@@ -83,18 +85,13 @@ class Shell:
         """
         print('Welcome to this terminal!')
         print('Current Setting: ')
-        print(f'ENV: {self.env_type}', end=' | ') 
+        print(f'ENV: {self.env_type}', end=' | ')
         print(f'Prompt_symbol: {self.prompt_symbol}', end=' | ')
         print(f'Prompt_style: {self.prompt_text_style}')
 
-   
-
     def main_loop(self):
         # TODO: improve command matching, parsing
-        while(self.is_running):
-
-            basic_cmd_name = [cmd._name for cmd in COMMAND_LIST]
-            #print(basic_cmd_list)
+        while (self.is_running):
 
             user_input = input(f'{self.prompt} ')
             self.parse_command_string(user_input)
@@ -102,32 +99,33 @@ class Shell:
             self.set_prompt(self.prompt_symbol, self.env_type, prompt_text_style=self.prompt_text_style)
 
     def shell_stop(self):
-        pass 
+        pass
 
     def parse_command_string(self, user_input):
         program_input = []
-        
+
         self.basic_cmd_list = [
-            cmd(env=self.env_type).get_name() 
+            cmd(env=self.env_type).get_name()
             for cmd in COMMAND_LIST
         ]
 
-        user_cmd = list(shlex.shlex(user_input, punctuation_chars=True))  # TODO: handle quoted argument
-        
+        # TODO: handle quoted argument
+        user_cmd = list(shlex.shlex(user_input, punctuation_chars=True))
+
         program_input.extend(user_cmd)
 
         self.IS_CMD_IN_BASIC_CMD_lIST = False
-        
+
         if user_input == '' or len(user_input[0]) == 0:
-            pass 
+            pass
 
         elif user_input in ('quit', 'exit', 'q', 'exit()'):
             self.is_running = False
-        
+
         else:
             shell_lexer = ShellLexer(user_input, self.env_type)
             shell_lexer.parse_token()
-    
+
     def authenticate_user(self) -> bool:
         MAX_NUMBER_LOGIN_ATTEMPT = 3
         NUMBER_OF_LOGIN_ATTEMPT = 0
@@ -141,10 +139,10 @@ class Shell:
                 NUMBER_OF_LOGIN_ATTEMPT += 1
         print(f'sudo: {NUMBER_OF_LOGIN_ATTEMPT} incorrect password attempts')
         return False
-    
+
     def elevate_privilege(self):
         self.make_shell('#', self.env_type, 'root')
-    
+
     @classmethod
     def make_shell(cls, prompt='$', env='default', username=None):
         cls(prompt, env, username)
@@ -157,10 +155,10 @@ class ShellLexer:
         self.token = None
         self.token_list = self.lex_token()
         self.env_type = env_type
-    
+
     def get_next_token(self):
         self.position += 1
-    
+
     def parse_token(self):
         if '2>' in self.token_list or '|' in self.token_list or '>' in self.token_list:
             token_index_got_pipe = -1
@@ -175,7 +173,7 @@ class ShellLexer:
                         if command_result is not None:
                             token_index_got_pipe = token_index
                             to_stdout(command_result[0], stdout_target=file)
-                    
+
                 elif token == "|":
                     stdout_target = self.token_list[token_index + 1]
                 elif token == "2>":
@@ -199,7 +197,7 @@ class ShellLexer:
 
     def command_runner(self, command):
         basic_cmd_list = [
-            cmd(env=self.env_type).get_name() 
+            cmd(env=self.env_type).get_name()
             for cmd in COMMAND_LIST
         ]
 
@@ -207,7 +205,7 @@ class ShellLexer:
         shell_logger.debug(f"[ShellLexer] user cmd: {user_cmd}")
         for cmd in basic_cmd_list:
             command_name, command_aliases = cmd
-                
+
             if user_cmd[0] == command_name or user_cmd[0] in command_aliases:
                 shell_logger.info(f"{user_cmd[0]} executed from basic_cmd_list: {command_name}")
                 cmd_index = basic_cmd_list.index(cmd)
@@ -221,12 +219,12 @@ class ShellLexer:
         if shutil.which(user_cmd[0]):
             process = subprocess.run(command, capture_output=True)
             return process.stdout.decode(), process.stderr.decode()
-        
+
         else:
             shell_logger.info(f"[ShellLexer] {user_cmd[0]} not found")
-            #print(f'{user_cmd[0]}: not found')
+            # print(f'{user_cmd[0]}: not found')
             return f'{user_cmd[0]}: not found', None
-    
+
     def lex_token(self):
         self.token_list = [command.strip() for command in re.split(r'(2\>|\>|\|)', self.text) if isinstance(command, str)]
         shell_logger.debug(f'token list: {self.token_list}')
@@ -244,13 +242,13 @@ class SuperUserShell(Shell):
     _privilege = 'root'
 
     def is_authenticated(self, password):
-         # Only for testing !
+        # Only for testing !
         if password != 'root':
             return False
         else:
             print("authenticated")
             return True
-    
+
     def set_prompt(self, prompt='#', env='default'):
         return super().set_prompt(prompt, env)
 
@@ -266,6 +264,7 @@ class SuperUserShell(Shell):
             else:
                 break
 
+
 def main():
     if len(sys.argv) > 1:
         terminal_prompt_symbol = shell_args.set_prompt_symbol
@@ -279,7 +278,10 @@ def main():
         terminal_prompt_text_style = shell_conf.get('prompt_text_style')
 
     UserShell(
-        prompt=terminal_prompt_symbol, env=terminal_env, prompt_text_style=terminal_prompt_text_style)
+        prompt=terminal_prompt_symbol,
+        env=terminal_env,
+        prompt_text_style=terminal_prompt_text_style)
+
 
 if __name__ == '__main__':
     main()

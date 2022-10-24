@@ -2,6 +2,7 @@ import pathlib
 import os
 from command.model import CommandSet, command_logger
 
+
 class ChangeDirectory(CommandSet):
     _name = 'cd'
 
@@ -30,4 +31,3 @@ class ChangeDirectory(CommandSet):
             else:
                 command_logger.info(f"{args[0]}: no such file or directory")
                 print(f"{args[0]}: no such file or directory")
-    

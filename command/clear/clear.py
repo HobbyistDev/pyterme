@@ -1,13 +1,14 @@
 import os
 from command.model import CommandSet
 
+
 class Clear(CommandSet):
     _name = 'clear'
     _aliases = ['cls']
 
     def command(self):
-        os.system('cls||clear') 
-    
+        os.system('cls||clear')
+
     def help(self):
         return """
         clear or cls is a command used for clear all previous output

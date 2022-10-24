@@ -1,6 +1,6 @@
 import pathlib
-import shutil
 from command.model import CommandSet
+
 
 class RemoveFile(CommandSet):
     _name = 'rm'

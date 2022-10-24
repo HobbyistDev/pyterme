@@ -2,6 +2,7 @@ import pathlib
 import shutil
 from command.model import CommandSet
 
+
 class Move(CommandSet):
     _name = 'mv'
     _aliases = ['move']

@@ -1,6 +1,7 @@
 import pathlib
 import json
 
+
 def shell_set_configuration(conf_path='default'):
     if conf_path == 'default':
         with open(pathlib.Path("conf/shell_conf.json")) as file:

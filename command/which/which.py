@@ -1,6 +1,7 @@
 import shutil
 from command.model import CommandSet
 
+
 class Which(CommandSet):
     _name = 'which'
     _aliases = ['where']

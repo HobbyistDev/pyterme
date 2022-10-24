@@ -4,8 +4,6 @@ from core.shell_argument import args as shell_args
 
 LOG_LEVEL = {'debug', 'info', 'warning', 'error', 'critical'}
 
-
-
 # app logger
 logger = logging.getLogger(__name__)
 logger.setLevel("DEBUG")
@@ -27,7 +25,7 @@ command_logger.addHandler(command_stream_handler)
 
 # shell logger
 
-shell_log_level_args = shell_args.log_level.upper() if  shell_args.log_level in LOG_LEVEL else None
+shell_log_level_args = shell_args.log_level.upper() if shell_args.log_level in LOG_LEVEL else None
 
 shell_logger = logging.getLogger(__name__)
 shell_logger.setLevel("DEBUG")
@@ -41,8 +39,3 @@ shell_stream_handler.setFormatter(shell_formatter)
 
 
 shell_logger.addHandler(shell_stream_handler)
-
-
-
-
-

@@ -1,10 +1,9 @@
 import pathlib
-import sys
 import fileinput
 from command.model import CommandSet
 
-from util.pipe_util import to_stdout, to_stderr
-from util.logger import command_logger
+from util.pipe_util import to_stdout
+
 
 class Concatenate(CommandSet):
     _name = 'cat'

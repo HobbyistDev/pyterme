@@ -1,6 +1,5 @@
 import pathlib
 import re
-import sys
 import fileinput
 
 from command.model import CommandSet
@@ -8,7 +7,7 @@ from util.color import colored_text
 
 
 class Grep(CommandSet):
-    _name ='grep'
+    _name = 'grep'
 
     def command(self, pattern, *args, **kwargs):
         # only set file args if the string is a path not argument

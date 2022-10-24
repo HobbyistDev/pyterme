@@ -1,7 +1,7 @@
 import sys
 
 from util.logger import command_logger
-from util.pipe_util import to_stdout, to_stderr
+
 
 class CommandSet:
     _name = None
@@ -9,7 +9,7 @@ class CommandSet:
     env_type = 'default'
     command_privilege = ['user']
     supported_env = ['default']
- 
+
     def __init__(self, env='default') -> None:
         self.env_type = env
         self.supported_env = ['default']
@@ -19,9 +19,9 @@ class CommandSet:
         self.stderr_target = sys.stderr
 
         self.__command_post_init()
-    
+
     def __command_post_init(self):
-        pass 
+        pass
 
     def command(self, *args, **kwargs):
         '''
@@ -35,14 +35,14 @@ class CommandSet:
         self.stdout_target = stdout_
         self.stderr_target = stderr_
 
-    def run_command(self, *args, **kwargs): 
+    def run_command(self, *args, **kwargs):
         if isinstance(self, list):
             raise TypeError(f'Wrong self type: {type(self)}')
-        
+
         command_result = None, None
         command_logger.debug(f"CommandSet: trying to run {self._name}")
         if self.env_type in self.supported_env:
-            
+
             if self.env_type == 'linux':
                 command_result = self.linux_specific_command(*args, **kwargs)
             elif self.env_type == 'windows':
@@ -52,15 +52,14 @@ class CommandSet:
         else:
             # set to default when supported env not found
             command_result = self.command(*args, **kwargs)
-        
+
         if command_result:
-            #to_stdout(command_result, stdout_target=self.stdout_target)
+            # to_stdout(command_result, stdout_target=self.stdout_target)
             # assume all command returned in stdout
             return command_result, None
         else:
             return None, None
-        
-        
+
     def linux_specific_command(self, *args, **kwargs):
         '''Overide this class if the command is specific to Linux'''
         command_logger.error("Not Implemented")
@@ -68,13 +67,12 @@ class CommandSet:
     def windows_specific_command(self, *args, **kwargs):
         '''Overide this class if the command is specific to Windows'''
         command_logger.error("Not Implemented")
-    
+
     def help(self):
         pass
 
     def get_name(self):
         return (self._name, self._aliases)
-    
+
     def change_env(self, env):
         self.env_type = env
-    
