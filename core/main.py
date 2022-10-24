@@ -68,7 +68,8 @@ class Shell:
                     self.prompt = f"{prompt_text}:{colored_text('~', 'blue')}{prompt}"
                 else:
                     try:
-                        self.prompt = f"{prompt_text}:{colored_text(f'~/{current_path.relative_to(self.home_dir).as_posix()}', 'blue')}{prompt}"
+                        self.prompt = f"{prompt_text}:\
+                                        {colored_text(f'~/{current_path.relative_to(self.home_dir).as_posix()}', 'blue')}{prompt}" # noqa
                     except ValueError:
                         self.prompt = f"{prompt_text}:{colored_text(current_path.as_posix(), 'blue')}{prompt}"
 
@@ -226,7 +227,10 @@ class ShellLexer:
             return f'{user_cmd[0]}: not found', None
 
     def lex_token(self):
-        self.token_list = [command.strip() for command in re.split(r'(2\>|\>|\|)', self.text) if isinstance(command, str)]
+        self.token_list = [
+            command.strip()
+            for command in re.split(r'(2\>|\>|\|)', self.text)
+            if isinstance(command, str)]
         shell_logger.debug(f'token list: {self.token_list}')
         return self.token_list
 
