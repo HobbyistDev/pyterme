@@ -10,6 +10,5 @@ class Echo(CommandSet):
         elif len(args) == 1:
             return args[0]
         else:
-            for arg in args:
-                print(arg, end=' ')
-            print("\n", end='')
+            joined_arg = ' '.join(args)
+            return joined_arg
