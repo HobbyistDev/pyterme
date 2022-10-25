@@ -6,7 +6,7 @@ from command.cd.cd import ChangeDirectory
 
 
 class TestChangeDirectoryWithDefaultEnvironment(unittest.TestCase):
-    def test_change_directory_with_no_argument(self):
+    def test_change_directory_with_no_argument_default_env(self):
         command = ChangeDirectory('default')
 
         current_directory = pathlib.Path.cwd()
@@ -29,3 +29,10 @@ class TestChangeDirectoryWithDefaultEnvironment(unittest.TestCase):
 
         # set back the current working directory
         os.chdir(str(current_directory.parent))
+
+    def test_change_directory_with_no_argument_windows_env(self):
+        command = ChangeDirectory('windows')
+
+        # test with no argument
+        command_result = command.windows_specific_command()
+        self.assertEqual(command_result, pathlib.Path.cwd())
