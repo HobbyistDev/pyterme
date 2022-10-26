@@ -1,6 +1,7 @@
 from command.cat.cat import Concatenate
 from command.cd.cd import ChangeDirectory
 from command.clear.clear import Clear
+from command.date.date import Date
 from command.echo.echo import Echo
 from command.grep.grep import Grep
 from command.hashsum.hashsum import (
@@ -22,6 +23,7 @@ COMMAND_LIST = [
     ChangeDirectory,
     Clear,
     Concatenate,
+    Date,
     Echo,
     Grep,
     ListFile,
