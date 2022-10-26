@@ -161,40 +161,33 @@ class ShellLexer:
         self.position += 1
 
     def parse_token(self):
-        if '2>' in self.token_list or '|' in self.token_list or '>' in self.token_list:
-            token_index_got_pipe = -1
-            for token in self.token_list:
-                token_index = self.token_list.index(token)
-                shell_logger.debug(f"[ShellLexer] token index: {token_index} | token: {token}")
-                # pipe handling
-                if token == ">":
-                    stdout_target = self.token_list[token_index + 1]
-                    with pathlib.Path(stdout_target).open('w') as file:
-                        command_result = self.command_runner(self.token_list[token_index - 1])
-                        if command_result is not None:
-                            token_index_got_pipe = token_index
-                            to_stdout(command_result[0], stdout_target=file)
-
-                elif token == "|":
-                    stdout_target = self.token_list[token_index + 1]
-                elif token == "2>":
-                    stderr_target = self.token_list[token_index + 1]
-                    with pathlib.Path(stderr_target).open('w') as file:
-                        token_index_got_pipe = token_index
-                        command_result = self.command_runner(self.token_list[token_index - 1])
-                        to_stderr(command_result[1], stderr_target=file)
-                elif token_index == token_index_got_pipe + 1:
-                    continue
-                else:
-                    command_result = self.command_runner(token)
+        token_index_got_pipe = -1
+        for token in self.token_list:
+            token_index = self.token_list.index(token)
+            shell_logger.debug(f"[ShellLexer] token index: {token_index} | token: {token}")
+            # pipe handling
+            if token == ">":
+                stdout_target = self.token_list[token_index + 1]
+                with pathlib.Path(stdout_target).open('w') as file:
+                    command_result = self.command_runner(self.token_list[token_index - 1])
                     if command_result is not None:
-                        to_stdout(command_result[0])
-        else:
-            command_result = self.command_runner(self.text)
-            if command_result is not None:
-                to_stdout(command_result[0])
-                if command_result[1] is not None:
-                    to_stderr(command_result[1])
+                        token_index_got_pipe = token_index
+                        to_stdout(command_result[0], stdout_target=file)
+
+            elif token == "|":
+                stdout_target = self.token_list[token_index + 1]
+            elif token == "2>":
+                stderr_target = self.token_list[token_index + 1]
+                with pathlib.Path(stderr_target).open('w') as file:
+                    token_index_got_pipe = token_index
+                    command_result = self.command_runner(self.token_list[token_index - 1])
+                    to_stderr(command_result[1], stderr_target=file)
+            elif token_index == token_index_got_pipe + 1:
+                continue
+            else:
+                command_result = self.command_runner(token)
+                if command_result is not None:
+                    to_stdout(command_result[0])
 
     def command_runner(self, command):
         basic_cmd_list = [
