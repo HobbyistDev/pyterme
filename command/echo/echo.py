@@ -6,7 +6,7 @@ class Echo(CommandSet):
 
     def command(self, *args, **kwargs):
         if len(args) == 0:
-            pass
+            return "\n"
         elif len(args) == 1:
             return args[0]
         else:
