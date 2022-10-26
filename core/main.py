@@ -161,7 +161,8 @@ class ShellLexer:
         self.position += 1
 
     def parse_token(self):
-        if '2>' in self.token_list or '|' in self.token_list or '>' in self.token_list:
+        token_symbol_list = ['2>', '|', '>']
+        if any(token for token in self.token_list if token in token_symbol_list):
             token_index_got_pipe = -1
             for token in self.token_list:
                 token_index = self.token_list.index(token)
