@@ -68,8 +68,7 @@ class Shell:
                     self.prompt = f"{prompt_text}:{colored_text('~', 'blue')}{prompt}"
                 else:
                     try:
-                        self.prompt = f"{prompt_text}:\
-                                        {colored_text(f'~/{current_path.relative_to(self.home_dir).as_posix()}', 'blue')}{prompt}" # noqa
+                        self.prompt = f"{prompt_text}:{colored_text(f'~/{current_path.relative_to(self.home_dir).as_posix()}', 'blue')}{prompt}" # noqa
                     except ValueError:
                         self.prompt = f"{prompt_text}:{colored_text(current_path.as_posix(), 'blue')}{prompt}"
 
