@@ -22,15 +22,15 @@ class ListFile(CommandSet):
             # if path is directory
             if path.is_dir():
                 # print_colored(path, 'bright_blue')
-                print(colored_text(path, color_conf.get('directory') or 'bright_blue'))
+                print(colored_text(path, color_conf.get('directory') or 'blue', 'bold'))
 
             # if path is executables
             elif path.suffix in ('.exe', '.com', '.bat', '.vbs'):
-                print(colored_text(path, color_conf.get('executables') or 'bright_green'))
+                print(colored_text(path, color_conf.get('executables') or 'green', 'bold'))
 
             # if path is archive
             elif path.suffix in ('zip', '.7z'):
-                print(colored_text(path, color_conf.get('archive') or 'bright_red'))
+                print(colored_text(path, color_conf.get('archive') or 'red', 'bold'))
 
             # if path is regular file
             elif path.is_file():
