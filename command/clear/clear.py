@@ -6,7 +6,7 @@ class Clear(CommandSet):
     _name = 'clear'
     _aliases = ['cls']
 
-    def command(self):
+    def command(self) -> None:
         os.system('cls||clear')
 
     def help(self):

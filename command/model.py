@@ -5,12 +5,12 @@ from util.logger import command_logger
 
 class CommandSet:
     _name = None
-    _aliases = []
-    env_type = 'default'
-    command_privilege = ['user']
-    supported_env = ['default']
+    _aliases: list = []
+    env_type: str = 'default'
+    command_privilege: list = ['user']
+    supported_env: list = ['default']
 
-    def __init__(self, env='default') -> None:
+    def __init__(self, env: str = 'default') -> None:
         self.env_type = env
         self.supported_env = ['default']
 
@@ -71,7 +71,7 @@ class CommandSet:
     def help(self):
         pass
 
-    def get_name(self):
+    def get_name(self) -> tuple:
         return (self._name, self._aliases)
 
     def change_env(self, env):

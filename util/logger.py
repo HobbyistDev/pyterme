@@ -2,7 +2,7 @@ import logging
 from core.shell_argument import args as shell_args
 
 
-LOG_LEVEL = {'debug', 'info', 'warning', 'error', 'critical'}
+LOG_LEVEL: set = {'debug', 'info', 'warning', 'error', 'critical'}
 
 # app logger
 logger = logging.getLogger(__name__)

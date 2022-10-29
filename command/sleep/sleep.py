@@ -8,7 +8,7 @@ class Sleep(CommandSet):
 
     def command(self, *time_num):
         for time_arg in time_num:
-            time_factor = 0
+            time_factor: int = 0
             time_number, suffix = re.match(
                 r'(?P<time>[\d\.]+)(?P<suffix>(s|h|m)?)', str(time_arg)).group(
                     'time', 'suffix')

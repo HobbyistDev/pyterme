@@ -17,15 +17,15 @@ from util.pipe_util import to_stdout, to_stderr
 
 # TODO: add shell redirection feature (stdout, stderr, etc)
 class Shell:
-    _privilege = 'user'
+    _privilege: str = 'user'
 
-    def __init__(self, prompt=None, env='default', username=None,
-                 prompt_text_style='unix'):
+    def __init__(self, prompt=None, env: str = 'default', username=None,
+                 prompt_text_style: str = 'unix'):
         self.username = getpass.getuser() if username is None else str(username)
         self.home_dir = pathlib.Path().resolve()
 
         # prompt setting
-        self.prompt_symbol = '$'
+        self.prompt_symbol: str = '$'
         if prompt is None:
             if prompt_text_style == 'default':
                 self.prompt_symbol = '$'
@@ -42,13 +42,13 @@ class Shell:
         self.stdout_target = sys.stdout
         self.stderr_target = sys.stderr
 
-        self.is_running = True
+        self.is_running: bool = True
         self.shell_start()
         self.main_loop()
         self.shell_stop()
 
-    def set_prompt(self, prompt='$', env='default', color='auto',
-                   prompt_text_style='unix'):
+    def set_prompt(self, prompt: str = '$', env: str = 'default', color: str = 'auto',
+                   prompt_text_style: str = 'unix'):
         """
         This method set prompt text looks like.
         @param  prompt  Set prompt_symbol in terminal (default: $)
@@ -94,7 +94,7 @@ class Shell:
         # TODO: improve command matching, parsing
         while (self.is_running):
 
-            user_input = input(f'{self.prompt} ')
+            user_input: str = input(f'{self.prompt} ')
             self.parse_command_string(user_input)
 
             self.set_prompt(self.prompt_symbol, self.env_type, prompt_text_style=self.prompt_text_style)
@@ -103,7 +103,7 @@ class Shell:
         pass
 
     def parse_command_string(self, user_input):
-        program_input = []
+        program_input: list = []
 
         self.basic_cmd_list = [
             cmd(env=self.env_type).get_name()
@@ -161,9 +161,9 @@ class ShellLexer:
         self.position += 1
 
     def parse_token(self):
-        token_index_got_pipe = -1
+        token_index_got_pipe: int = -1
         for token in self.token_list:
-            token_index = self.token_list.index(token)
+            token_index: int = self.token_list.index(token)
             shell_logger.debug(f"[ShellLexer] token index: {token_index} | token: {token}")
             # pipe handling
             if token == ">":
@@ -195,7 +195,7 @@ class ShellLexer:
             for cmd in COMMAND_LIST
         ]
 
-        user_cmd = list(shlex.shlex(command, punctuation_chars=True))
+        user_cmd: list = list(shlex.shlex(command, punctuation_chars=True))
         shell_logger.debug(f"[ShellLexer] user cmd: {user_cmd}")
         for cmd in basic_cmd_list:
             command_name, command_aliases = cmd
@@ -219,7 +219,7 @@ class ShellLexer:
             # print(f'{user_cmd[0]}: not found')
             return f'{user_cmd[0]}: not found', None
 
-    def lex_token(self):
+    def lex_token(self) -> list:
         self.token_list = [
             command.strip()
             for command in re.split(r'(2\>|\>|\|)', self.text)

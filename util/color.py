@@ -101,7 +101,7 @@ def print_colored(text, text_color, color_mode='auto', *args, **kwargs):
         print(f"{text}", *args, **kwargs)
 
 
-def colored_text(text, text_color, text_style=None, color_type='foreground'):
+def colored_text(text, text_color, text_style=None, color_type='foreground') -> str:
     """
     This function return string that contain ANSI color value \
     that can be printed in terminal if the terminal support ANSI code value.
