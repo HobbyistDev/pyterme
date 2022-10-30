@@ -165,6 +165,11 @@ class ShellLexer:
             token_index: int = self.token_list.index(token)
             shell_logger.debug(f"[ShellLexer] token index: {token_index} | token: {token}")
             # pipe handling
+
+            # FILE DESCRIPTOR:
+            # 0 : STDIN
+            # 1 : STDOUT (eg: 1>)
+            # 2 : STDERR (eg: 2>)
             if token == ">" or token == "1>":
                 stdout_target = self.token_list[token_index + 1]
                 with pathlib.Path(stdout_target).open('w') as file:
