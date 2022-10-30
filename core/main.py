@@ -165,7 +165,7 @@ class ShellLexer:
             token_index: int = self.token_list.index(token)
             shell_logger.debug(f"[ShellLexer] token index: {token_index} | token: {token}")
             # pipe handling
-            if token == ">":
+            if token == ">" or token == "1>":
                 stdout_target = self.token_list[token_index + 1]
                 with pathlib.Path(stdout_target).open('w') as file:
                     command_result = self.command_runner(self.token_list[token_index - 1])
@@ -228,7 +228,7 @@ class ShellLexer:
     def lex_token(self) -> list:
         self.token_list = [
             command.strip()
-            for command in re.split(r'(\>\>|2\>|\>|\|)', self.text)
+            for command in re.split(r'(\>\>|1\>|2\>|\>|\|)', self.text)
             if isinstance(command, str)]
         shell_logger.debug(f'token list: {self.token_list}')
         return self.token_list
