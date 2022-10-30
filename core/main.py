@@ -181,6 +181,13 @@ class ShellLexer:
                     token_index_got_pipe = token_index
                     command_result = self.command_runner(self.token_list[token_index - 1])
                     to_stderr(command_result[1], stderr_target=file)
+            elif token == '>>':
+                stdout_target = self.token_list[token_index + 1]
+                with pathlib.Path(stdout_target).open('a') as file:
+                    token_index_got_pipe = token_index
+                    command_result = self.command_runner(self.token_list[token_index - 1])
+                    to_stdout(command_result[0], stdout_target=file)
+
             elif token_index == token_index_got_pipe + 1 and len(self.token_list) > 1:
                 continue
             else:
@@ -221,7 +228,7 @@ class ShellLexer:
     def lex_token(self) -> list:
         self.token_list = [
             command.strip()
-            for command in re.split(r'(2\>|\>|\|)', self.text)
+            for command in re.split(r'(\>\>|2\>|\>|\|)', self.text)
             if isinstance(command, str)]
         shell_logger.debug(f'token list: {self.token_list}')
         return self.token_list
