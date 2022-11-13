@@ -18,7 +18,7 @@ class ShellLexer:
         number_pattern = r'd+'
         string_pattern = r'w+'
 
-        regex_pattern = '([' + number_pattern + r'|' + pipe_pattern + string_pattern + '])'
+        regex_pattern = rf'([{number_pattern}|{pipe_pattern}|{string_pattern}])'
         self.raw_token_list: list[str] = list(
                                     token.strip()
                                     for token in re.split(regex_pattern, self.text) if token is not None)
