@@ -1,6 +1,5 @@
 import pathlib
 
-from builtin.lexer.shell_lexer import ShellLexer
 from util.color import colored_text
 
 
@@ -34,18 +33,6 @@ class ShellParser:
 
     def parse(self, log_level='warning'):
         pass
-
-
-class ShellLexerEngine:
-    """
-    Shell Lexer Engine Base Class, used for customizing shell lexer. The
-    default lexer will be using regex (re module)
-    """
-    def __init__(self, text: str):
-        self.text = text
-
-    def lex(self, log_level='warning'):
-        return ShellLexer(self.text)
 
 
 class ShellWarning:
