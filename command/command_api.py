@@ -1,3 +1,4 @@
+import dataclasses
 import shutil
 import subprocess
 
@@ -13,10 +14,11 @@ class CommandArgumentParser:
     pass
 
 
+@dataclasses.dataclass
 class CommandFlag:
-    def __init__(self, command_type, command_help):
-        self.type = command_type  # can optional or positional
-        self.help = command_help
+    flag: str
+    type: str
+    help: str
 
 
 class CommandStandardOutput:
