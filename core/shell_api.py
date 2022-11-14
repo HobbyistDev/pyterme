@@ -1,3 +1,4 @@
+import dataclasses
 import pathlib
 
 from util.color import colored_text
@@ -11,11 +12,10 @@ class ShellStatusCode:
     pass
 
 
-class ShellAppearance:
-    def __init__(self, name, prompt_symbol, prompt_text):
-        self.name = name
-        self.prompt_symbol = prompt_symbol
-        self.prompt_text = prompt_text
+@dataclasses.dataclass
+class ShellPromptStyle:
+    prompt_symbol: str
+    prompt_text: str
 
 
 class ShellTheme:
