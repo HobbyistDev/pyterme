@@ -67,7 +67,7 @@ class ShellLexerBase:
 
 
 class RegexLexer(ShellLexerBase):
-    def set_token_value_list(self) -> list[str]:
+    def set_token_value_list(self):
         pipe_pattern = r'2>|1>|>>|\|'
         number_pattern = r'd+'
         float_pattern = r'\d+\.\d+'
@@ -80,5 +80,5 @@ class RegexLexer(ShellLexerBase):
 
 
 class ShlexLexer(ShellLexerBase):
-    def set_token_value_list(self) -> list:
+    def set_token_value_list(self) -> list[str] | None:
         self.raw_token = list(shlex.shlex(self.text, punctuation_chars=True))
