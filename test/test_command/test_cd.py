@@ -23,9 +23,9 @@ class TestChangeDirectoryWithDefaultEnvironment(unittest.TestCase):
         current_directory = pathlib.Path(__file__)
 
         # change directory to this folder
-        command.command(current_directory.parent.parent / 'util')  # Test Fail
+        command.command(current_directory.parent.parent.parent / 'util')  # Test Fail
 
-        self.assertEqual(str(pathlib.Path.cwd()), str(current_directory.parent.parent / 'util'))
+        self.assertEqual(str(pathlib.Path.cwd()), str(current_directory.parent.parent.parent / 'util'))
 
         # set back the current working directory
         os.chdir(str(current_directory.parent))
