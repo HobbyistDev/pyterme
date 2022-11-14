@@ -53,14 +53,14 @@ class ShellLexerBase:
                 token_type = PipeToken
 
             # data type
-            elif re.match(r'\w+', token):
-                token_type = String
-
-            elif re.match(r'\d', token):
+            elif re.match(r'(\d+)', token):
                 token_type = Integer
 
-            elif re.match(r'\d+\.\d+', token):
+            elif re.match(r'(\d+\.\d+)', token):
                 token_type = Float
+
+            elif re.match(r'\w+', token):
+                token_type = String
 
             if token_type != 'undefined':
                 self.token_list.append(Token(token, token_type, index))
@@ -70,10 +70,11 @@ class RegexLexer(ShellLexerBase):
     def set_token_value_list(self) -> list[str]:
         pipe_pattern = r'2>|1>|>>|\|'
         number_pattern = r'd+'
+        float_pattern = r'\d+\.\d+'
         string_pattern = r'w+'
 
-        regex_pattern = rf'([{number_pattern}|{pipe_pattern}|{string_pattern}])'
-        self.raw_token_list: list[str] = (
+        regex_pattern = rf'([{float_pattern}{number_pattern}|{pipe_pattern}|{string_pattern}])'
+        self.raw_token: list[str] = (
             list(token.strip() for token in re.split(regex_pattern, self.text)
                  if token is not None))
 
