@@ -1,14 +1,14 @@
+import dataclasses
+from typing import Any
+
 TOKEN_LIST = ('+', '-', '/', '//')
 
 
+@dataclasses.dataclass
 class Token:
-    def __init__(self, token_value, token_type, token_index):
-        self.value = token_value
-        self.type = token_type
-        self.index: int = token_index
-
-    def __repr__(self) -> str:
-        return f'Token(value={self.value}, type={self.type}, index={self.index})'
+    value: Any
+    type: object
+    index: int
 
 
 class AritmethicOperator:
