@@ -33,4 +33,8 @@ shell_customization_parser.add_argument(
         --set-prompt-text-style set to windows'
 )
 
-args = parser.parse_args()
+shell_customization_parser.add_argument(
+    '--action', default='terminal'
+)
+
+# command customatization

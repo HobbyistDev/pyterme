@@ -8,7 +8,7 @@ import shlex
 import subprocess
 
 from command.command_list import COMMAND_LIST
-from core.shell_argument import args as shell_args
+from core.shell_argument import parser
 from core.shell_conf_parser import shell_set_configuration
 from util.logger import shell_logger
 from util.color import colored_text
@@ -274,6 +274,7 @@ class SuperUserShell(Shell):
 
 
 def main():
+    shell_args = parser.parse_known_args()
     if len(sys.argv) > 1:
         terminal_prompt_symbol = shell_args.set_prompt_symbol
         terminal_env = shell_args.set_env

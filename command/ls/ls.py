@@ -1,5 +1,7 @@
+import argparse
 import json
 import pathlib
+
 from command.model import CommandSet
 from util.color import colored_text
 
@@ -43,3 +45,12 @@ def get_configuration():
     with open(pathlib.Path(__file__).parent / "ls_conf.json") as conf_file:
         json_conf_file = json.load(conf_file)
     return json_conf_file
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-l')
+    args = parser.parse_known_args()
+
+    command = ListFile()
+    command.run_command()

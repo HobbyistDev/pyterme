@@ -1,5 +1,5 @@
 import logging
-from core.shell_argument import args as shell_args
+from core.shell_argument import parser
 
 
 LOG_LEVEL: set = {'debug', 'info', 'warning', 'error', 'critical'}
@@ -24,7 +24,7 @@ command_logger.addHandler(command_stream_handler)
 
 
 # shell logger
-
+shell_args = parser.parse_args()
 shell_log_level_args = shell_args.log_level.upper() if shell_args.log_level in LOG_LEVEL else None
 
 shell_logger = logging.getLogger(__name__)
