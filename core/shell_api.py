@@ -22,6 +22,10 @@ class ShellTheme:
     pass
 
 
+class ShellArgs:
+    pass
+
+
 class ShellParser:
     def __init__(self, text: str, parser_engine='default'):
         self.unparsed_text = text

@@ -1,5 +1,6 @@
 import sys
 
+from command.command_api import CommandFlag
 from util.logger import command_logger
 
 
@@ -9,6 +10,7 @@ class CommandSet:
     env_type: str = 'default'
     command_privilege: list = ['user']
     supported_env: list = ['default']
+    command_args: list[CommandFlag] = []
 
     def __init__(self, env: str = 'default') -> None:
         self.env_type = env
@@ -76,3 +78,16 @@ class CommandSet:
 
     def change_env(self, env):
         self.env_type = env
+
+    def add_argument(self, argument_name, argument_help):
+        if argument_name.startswith('--') or argument_name.startswith('-'):
+            argument_type = 'optional'
+        else:
+            argument_type = 'positional'
+
+        self.command_args.append(
+            CommandFlag(argument_name, argument_type, argument_help)
+        )
+
+    def _parse_args(self, *args):
+        pass
