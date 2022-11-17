@@ -22,8 +22,11 @@ class ShellTheme:
     pass
 
 
+@dataclasses.dataclass(frozen=True)
 class ShellArgs:
-    pass
+    flags: str
+    help: str
+    default: str
 
 
 class ShellParser:

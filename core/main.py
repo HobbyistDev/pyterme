@@ -9,6 +9,7 @@ import subprocess
 
 from command.command_list import COMMAND_LIST
 from core.shell_argument import parser
+from core.shell_api import ShellArgs
 from core.shell_conf_parser import shell_set_configuration
 from util.logger import shell_logger
 from util.color import colored_text
@@ -18,9 +19,10 @@ from util.pipe_util import to_stdout, to_stderr
 # TODO: add shell redirection feature (stdout, stderr, etc)
 class Shell:
     _privilege: str = 'user'
+    shell_args: list[ShellArgs] = []
 
     def __init__(self, prompt=None, env: str = 'default', username=None,
-                 prompt_text_style: str = 'unix'):
+                 prompt_text_style: str = 'unix', run_immediately=True):
         self.username = getpass.getuser() if username is None else str(username)
         self.home_dir = pathlib.Path().resolve()
 
@@ -35,17 +37,22 @@ class Shell:
             self.prompt_symbol = prompt
 
         self.prompt_text_style = prompt_text_style
-        self.set_prompt(
-            self.prompt_symbol, env, prompt_text_style=self.prompt_text_style)
 
         # default pipe
         self.stdout_target = sys.stdout
         self.stderr_target = sys.stderr
 
-        self.is_running: bool = True
-        self.shell_start()
-        self.main_loop()
-        self.shell_stop()
+        if run_immediately:
+            self.set_prompt(
+                self.prompt_symbol, env, prompt_text_style=self.prompt_text_style)
+
+            self.is_running: bool = run_immediately
+
+            self.set_argument_list()
+            self.parse_arguments()
+            self.shell_start()
+            self.main_loop()
+            self.shell_stop()
 
     def set_prompt(self, prompt: str = '$', env: str = 'default', color: str = 'auto',
                    prompt_text_style: str = 'unix'):
@@ -142,6 +149,21 @@ class Shell:
 
     def elevate_privilege(self):
         self.make_shell('#', self.env_type, 'root')
+
+    def set_argument_list(self):
+        """This function is used to define shell argument"""
+        self.add_argument('--help')
+
+    def add_argument(self, argument_flag, argument_help='', default=None):
+        self.shell_args.append(
+            ShellArgs(argument_flag, argument_help, default=default)
+        )
+
+    def parse_arguments(self):
+        pass
+
+    def run_shell(self):
+        self.is_running = True
 
     @classmethod
     def make_shell(cls, prompt='$', env='default', username=None):
