@@ -82,5 +82,5 @@ class BaseCommand:
     name: str
     alias: list = []
 
-    def _command(self, *args, **kwargs):
+    def _command(self, **kwargs):
         pass
