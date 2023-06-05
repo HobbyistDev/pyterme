@@ -76,3 +76,11 @@ class CommandSet:
 
     def change_env(self, env):
         self.env_type = env
+
+
+class BaseCommand:
+    name: str
+    alias: list = []
+
+    def _command(self, *args, **kwargs):
+        pass
