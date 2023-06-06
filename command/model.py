@@ -4,7 +4,7 @@ from util.logger import command_logger
 
 
 class CommandSet:
-    _name = None
+    _name: str = None
     _aliases: list = []
     env_type: str = 'default'
     command_privilege: list = ['user']
