@@ -3,6 +3,8 @@ from command.model import CommandSet
 
 
 class Clear(CommandSet):
+    """Clear all command that currently appear"""
+
     _name = 'clear'
     _aliases = ['cls']
 
